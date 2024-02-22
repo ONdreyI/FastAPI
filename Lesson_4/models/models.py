@@ -1,12 +1,13 @@
 from datetime import datetime
 
-from sqlalchemy import MetaData, Table, Column, Integer, String, TIMESTAMP, ForeignKey, JSON
+from sqlalchemy import Table, Column, Integer, String, TIMESTAMP, ForeignKey, JSON
+from sqlalchemy.orm import declarative_base
 
-metadata = MetaData()
+Base = declarative_base()
 
 roles = Table(
     "roles",
-    metadata,
+    Base.metadata,
     Column("id", Integer, primary_key=True),
     Column("name", String, nullable=False),
     Column("permissions", JSON),
@@ -14,7 +15,7 @@ roles = Table(
 
 users = Table(
     "users",
-    metadata,
+    Base.metadata,
     Column("id", Integer, primary_key=True),
     Column("email", String, nullable=False),
     Column("username", String, nullable=False),
