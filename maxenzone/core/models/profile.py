@@ -6,8 +6,6 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .base import Base
 from .mixins import UserRelationMixin
 
-if TYPE_CHECKING:
-    from .post import User
 
 
 class Profile(UserRelationMixin, Base):
