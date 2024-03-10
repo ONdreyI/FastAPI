@@ -14,6 +14,7 @@ if TYPE_CHECKING:
 class Post(UserRelationMixin, Base):
     # _user_id_unique = False
     # _user_id_nullable = False
+    _user_back_populates = "posts"
 
     title: Mapped[str] = mapped_column(String(200), unique=False)
     body: Mapped[str] = mapped_column(
