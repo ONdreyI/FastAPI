@@ -16,3 +16,9 @@ class Post(UserRelationMixin, Base):
         default="",  # исп. если создается новый экземпляр прямо в Алхимии
         server_default="",  # исп. если мы будем вносить новую запись со стороны сервера
     )
+
+    def __str__(self):
+        return f"{self.__class__.__name__}(id={self.id}, username={self.title!r})"
+
+    def __repr__(self):
+        return str(self)
