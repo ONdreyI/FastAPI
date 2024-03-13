@@ -1,8 +1,14 @@
 from datetime import datetime
-
+from typing import TYPE_CHECKING
 from sqlalchemy import func
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .base import Base
+from .order_product_association import order_product_association_table
+
+if TYPE_CHECKING:
+    from .order import Order
+    from .product import Product
+    from .user import User
 
 
 class Order(Base):
@@ -11,4 +17,8 @@ class Order(Base):
     created_at: Mapped[datetime] = mapped_column(
         server_default=func.now(),
         default=datetime.now,  # вызов без скобок позволит вызвать сразу
+    )
+    products: Mapped[list["Product"]] = relationship(
+        back_populates="user",
+        secondary=order_product_association_table,
     )
