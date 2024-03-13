@@ -19,6 +19,6 @@ class Order(Base):
         default=datetime.utcnow,  # вызов без скобок позволит вызвать сразу
     )
     products: Mapped[list["Product"]] = relationship(
-        back_populates="orders",
         secondary=order_product_association_table,
+        back_populates="orders",
     )
