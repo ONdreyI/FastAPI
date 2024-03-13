@@ -16,7 +16,7 @@ class Order(Base):
     promocode: Mapped[str | None]
     created_at: Mapped[datetime] = mapped_column(
         server_default=func.now(),
-        default=datetime.now,  # вызов без скобок позволит вызвать сразу
+        default=datetime.utcnow,  # вызов без скобок позволит вызвать сразу
     )
     products: Mapped[list["Product"]] = relationship(
         back_populates="orders",
