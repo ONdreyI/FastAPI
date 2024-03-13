@@ -166,14 +166,14 @@ async def demo_m2m(session: AsyncSession):
         description="Office display",
         price=299,
     )
-    order_one = await session.get(
-        Order,
+    order_one = await session.scalar(
+        select(Order).where(Order.id == order_one.id),
         order_one.id,
         options=(selectinload(Order.products),),
     )
-    order_promo = await session.get(
-        Order,
-        order_promo.id,
+    order_promo = await session.scalar(
+        select(Order).where(Order.id == order_one.id),
+        order_one.id,
         options=(selectinload(Order.products),),
     )
 
@@ -209,7 +209,8 @@ async def main():
         # await get_user_with_posts(session=session)
         # await get_posts_with_author(session=session)
         # await get_users_with_posts_and_profiles(session=session)
-        await get_profiles_with_users_and_users_with_posts(session=session)
+        # await get_profiles_with_users_and_users_with_posts(session=session)
+        await demo_m2m(session=session)
 
 
 if __name__ == "__main__":
