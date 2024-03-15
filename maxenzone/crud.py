@@ -3,7 +3,7 @@ import asyncio
 from sqlalchemy import select, Result
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload, selectinload
-from core.models import db_helper, User, Profile, Post, profile
+from core.models import db_helper, User, Profile, Post, profile, OrderProductAssociation
 from core.models import Order, Product
 
 
@@ -185,11 +185,13 @@ async def create_orders_and_products(
     await session.commit()
 
 
-async def get_orders_with_products(session: AsyncSession) -> list[Order]:
+async def get_orders_with_products_assoc(session: AsyncSession) -> list[Order]:
     stmt = (
         select(Order)
         .options(
-            selectinload(Order.products),
+            selectinload(Order.products_details).joinedload(
+                OrderProductAssociation.product
+            ),
         )
         .order_by(Order.id)
     )
@@ -198,16 +200,60 @@ async def get_orders_with_products(session: AsyncSession) -> list[Order]:
     return list(orders)
 
 
+async def demo_get_orders_with_orders_through_secondary(session: AsyncSession):
+    # orders = await get_orders_with_products(session)
+    # for order in orders:
+    #     print(order.id, order.promocode, order.created_at, "products: ")
+    #     for product in order.products:  # type: Product
+    #         print("-", product.id, product.name, product.price)
+    pass
+
+
+async def demo_get_orders_with_products_with_associations(session: AsyncSession):
+    orders = await get_orders_with_products_assoc(session)
+
+    for order in orders:
+        print(order.id, order.promocode, order.created_at, "products:")
+        for (
+            order_product_details
+        ) in order.products_details:  # type: OrderProductAssociation
+            print(
+                "-",
+                order_product_details.product.id,
+                order_product_details.product.name,
+                order_product_details.product.price,
+                "qty: ",
+                order_product_details.count,
+            )
+
+
 async def main_relations(session: AsyncSession):
     pass
 
 
-async def demo_m2m(session: AsyncSession):
-    orders = await get_orders_with_products(session)
+async def create_gift_order_for_existing_order(session: AsyncSession):
+    orders = await get_orders_with_products_assoc(session)
+    gift_product = await create_product(
+        session,
+        name="Gift",
+        description="Gift for you",
+        price=0,
+    )
     for order in orders:
-        print(order.id, order.promocode, order.created_at, "products: ")
-        for product in order.products:  # type: Product
-            print("-", product.id, product.name, product.price)
+        order.products_details.append(
+            OrderProductAssociation(
+                count=1,
+                unit_price=0,
+                product=gift_product,
+            )
+        )
+
+    await session.commit()
+
+
+async def demo_m2m(session: AsyncSession):
+    await demo_get_orders_with_products_with_associations(session)
+    # await create_gift_order_for_existing_order(session)
 
 
 async def main():
@@ -238,6 +284,7 @@ async def main():
         # await get_users_with_posts_and_profiles(session=session)
         # await get_profiles_with_users_and_users_with_posts(session=session)
         await demo_m2m(session=session)
+        # await demo_get_orders_with_products_with_associations(session)
 
 
 if __name__ == "__main__":
