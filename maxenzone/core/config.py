@@ -12,10 +12,18 @@ class DbSettings(BaseModel):
     echo: bool = True  # True only for testing
 
 
+class AuthJWT(BaseModel):
+    private_key: Path = BASE_DIR / "certs" / "jwt-private.pem"
+    public_key: Path = BASE_DIR / "certs" / "jwt-public.pem"
+    algorithm: str = "RS256"
+
+
 class Settings(BaseSettings):
     api_v1_prefix: str = "/api/v1"
 
     db: DbSettings = DbSettings()  # for backwards compatibility
+
+    auth_jwt: AuthJWT = AuthJWT()
 
 
 settings = Settings()
