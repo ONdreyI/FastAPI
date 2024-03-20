@@ -35,10 +35,11 @@ def auth_user_issue_jwt(
     user: UserSchema = Depends(validate_auth_user_login),
 ):
     jwt_payload = {
+        "sub": user.username,
         "username": user.username,
         "email": user.email,
     }
-    token = auth_utils.encode_jwt()
+    token = auth_utils.encode_jwt(jwt_payload)
     return TokenInfo(
         access_token=token,
         token_type="Bearer",
