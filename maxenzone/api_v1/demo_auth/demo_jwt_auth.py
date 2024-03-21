@@ -1,7 +1,7 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Form, HTTPException, status
 from pydantic import BaseModel
-from maxenzone.users.schemas import UserSchema
-from maxenzone.auth import utils as auth_utils
+from users.schemas import UserSchema
+from auth import utils as auth_utils
 
 
 class TokenInfo(BaseModel):
@@ -20,19 +20,42 @@ sam = UserSchema(
     username="sam",
     password=auth_utils.hash_password("secret"),
 )
+
 users_db: dict[str, UserSchema] = {
-    john.username: "john",
-    sam.username: "sam",
+    john.username: john,
+    sam.username: sam,
 }
 
 
-def validate_auth_user_login():
-    pass
+def validate_auth_user(
+    username: str = Form(),
+    password: str = Form(),
+):
+    unauthed_exc = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="invalid username or password",
+    )
+    if not (user := users_db.get(username)):
+        raise unauthed_exc
+
+    if not auth_utils.validate_password(
+        password=password,
+        hashed_password=user.password,
+    ):
+        raise unauthed_exc
+
+    if not user.active:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="user inactive",
+        )
+
+    return user
 
 
-@router.post("/login")
+@router.post("/login/")
 def auth_user_issue_jwt(
-    user: UserSchema = Depends(validate_auth_user_login),
+    user: UserSchema = Depends(validate_auth_user),
 ):
     jwt_payload = {
         "sub": user.username,
