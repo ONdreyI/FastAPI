@@ -7,7 +7,7 @@ app = FastAPI()
 
 class Task(BaseModel):
     name: str
-    description: str | None
+    description: str | None = None
 
 
 @app.get("/tasks")
