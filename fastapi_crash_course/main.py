@@ -10,6 +10,7 @@ class Task(BaseModel):
     description: str | None
 
 
-@app.get("/home")
-def get_home():
-    return {"message": "Welcome to FastAPI!"}
+@app.get("/tasks")
+def get_tasks():
+    task = Task(name="Запиши это видео")
+    return {"data": task}
