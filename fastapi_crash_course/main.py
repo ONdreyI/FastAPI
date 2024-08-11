@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from typing import Annotated
 
 app = FastAPI()
 
@@ -13,7 +14,17 @@ class STask(STaskAdd):
     id: int
 
 
-@app.get("/tasks")
-def get_tasks():
-    task = STaskAdd(name="Запиши это видео")
-    return {"data": task}
+tasks = []
+
+
+@app.post("/tasks")
+async def add_task(
+    task: STaskAdd,
+):
+    return {"ok": True}
+
+
+# @app.get("/tasks")
+# def get_tasks():
+#     task = STaskAdd(name="Запиши это видео")
+#     return {"data": task}
