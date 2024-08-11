@@ -1,0 +1,23 @@
+from enum import Enum
+from typing import Union
+
+from pydantic import BaseModel
+
+
+class Item(BaseModel):
+    name: str
+    description: Union[str, None] = None
+    price: float
+    tax: Union[float, None] = None
+    tags: list = []
+
+
+class Hash(BaseModel):
+    name: str
+    description: Union[str, None] = None
+
+
+class ModelName(Enum):
+    alexnet = "alexnet"
+    resent = "resent"
+    lenet = "lenet"

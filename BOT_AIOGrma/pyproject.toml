@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "bot-aiogrma"
+version = "0.1.0"
+description = ""
+authors = ["psk-a <ai3501669@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+aiogram = "^3.10.0"
+aiogram-dialog = "^2.1.0"
+environs = "^11.0.0"
+black = "^24.4.2"
+pytest = "^8.3.2"
+pytest-asyncio = "^0.23.8"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

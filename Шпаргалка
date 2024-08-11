@@ -1,0 +1,45 @@
+                                    1. VENV
+Создание: python -m venv venv
+Активация: venv\Scripts\activate  - для Windows
+Деактивация: deactivate
+Распечатать установленные пакеты: pip freeze, pip list
+Обновить библиотеку: pip install -U и имя текущей библиотеки
+Установка библиотеки: pip install requests sys - указать через знак пробела
+Удаление библиотеки: pip uninstall (далее имя библиотеки) -y
+Создание файла с зависимостями для создания venv: pip freeze > requirements.txt
+Установка библиотек с зависимостями: pip install -r requirements.txt
+clear - очистка Терминала от записей
+
+                                     2. Google операторы
+Кавычки “” — точный запрос
+Минус — — убирает из выдачи результаты со словом
+OR | (или) — сливает выдачу по двум запросам
+Скобки ( ) — вспомогательный оператор для группировки
+
+Операторы для SEO-задач:
+
+site: — поиск по определённому сайту
+cache: — показывает актуальный кэш страницы
+related: — поиск похожих страниц (related:skyeng.ru)
+filetype: — поиск страниц с определенным файлами (дизайн filetype:xlsx)
+intext: — поиск определенного слова в тексте (site:lifehacker.ru intext:доставка еды)
+intitle: — поиск определенного слова в заголовке (site:ru.wikipedia.org intitle:старк)
+inurl: — находит страницы со словом в url-адресе
+
+                                             3. FAST API
+
+uvicorn main:app --reload (команда для запуска
+приложения с опцией перезапуска кода в случае его изменения)
+http://127.0.0.1:8000 - local host для просмотра содержимого сайта
+http://127.0.0.1:8000/docs - просмотр само редактируемой документации по сайту
+В Chrome пкм "Insert", "Network"
+
+                                               4. Migrations
+alembic init migrations - создание миграционных файлов для СУБД
+alembic revision --autogenerate -m "Another"
+alembic upgrade head
+https://github.com/zhanymkanov/fastapi-best-practices - лучшие практики по FastAPI
+
+                                                 5. PYTHON
+python -c 'import secrets; print(secrets.token_hex())' - случайная генерация токена
+mkdir certs - создание новой папки внутри проекта
