@@ -5,6 +5,9 @@
       <sourceFolder url="file://$MODULE_DIR$/microshop" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/short_project/evrone-fastapi" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/.venv" />
+      <excludeFolder url="file://$MODULE_DIR$/Lesson_4/auth" />
+      <excludeFolder url="file://$MODULE_DIR$/Lesson_4/migrations" />
+      <excludeFolder url="file://$MODULE_DIR$/Lesson_4/src" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
