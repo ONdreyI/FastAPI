@@ -9,6 +9,7 @@ class TaskRepository:
             task_dict = data.model_dump()
 
             task = TaskOrm(**task_dict)
+            await session.commit()
 
     @classmethod
     async def get_all(cls): ...
