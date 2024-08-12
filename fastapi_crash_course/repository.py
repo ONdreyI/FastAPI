@@ -1,3 +1,5 @@
+from sqlalchemy import select
+
 from fastapi_crash_course.database import new_session, TaskOrm
 from fastapi_crash_course.main import STaskAdd
 
@@ -15,4 +17,9 @@ class TaskRepository:
             return task.id
 
     @classmethod
-    async def get_all(cls): ...
+    async def get_all(cls):
+        async with new_session() as session:
+            query = select(TaskOrm)
+            result = await session.execute(query)
+            task_models = result.scalars().all()
+            return task_models
